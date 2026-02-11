@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "KlVyYydxEig=",
+  "success": true,
+  "projectFilePath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj",
+  "expectedPackageFiles": [
+    "/Users/alexkavaleuskiy/.nuget/packages/nunit/4.4.0/nunit.4.4.0.nupkg.sha512"
+  ],
+  "logs": []
+}
