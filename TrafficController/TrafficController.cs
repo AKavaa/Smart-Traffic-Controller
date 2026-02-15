@@ -17,6 +17,8 @@ namespace SmartTrafficController
         {
             //L1R1 - L1R2
             intersectionID = id.ToLower();
+
+            //L1R4
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
 
@@ -40,12 +42,12 @@ namespace SmartTrafficController
         }
 
 
-        // L1R5 
-        public void SetIntersectionID(string id)
+        public void SetIntersectionID(string id)   // L1R3
         {
             intersectionID = id.ToLower();
 
         }
+        // L1R5 
         public bool SetStateDirect(string vehicle, string pedestrian)
         {
             string vehicle_input = vehicle?.ToLower() ?? ""; // if vehicle is "RED" it will become "red", and ?? "" eliminates the warning inside the code
