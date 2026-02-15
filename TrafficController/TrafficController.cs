@@ -126,6 +126,7 @@ namespace SmartTrafficController
 
             if (vehicleMove && pedestrianMove)
             {
+                // the state is updated only if both of the signals are legal
                 CurrentVehicleSignalState = vehicleSignal_input;
                 CurrentPedestrianSignalState = pedestrianSignal_input;
                 return true;
