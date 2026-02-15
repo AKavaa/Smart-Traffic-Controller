@@ -68,8 +68,72 @@ namespace SmartTrafficController
                 return false;
             }
 
+        }
 
+        // L2R1 
+        public bool SetCurrentState(string vehicleSignal, string pedestrianSignal)
+        {
+            string vehicleSignal_input = vehicleSignal?.ToLower() ?? "";
+            string pedestrianSignal_input = pedestrianSignal?.ToLower() ?? "";
 
+            // if the color or pedestrian state change, the switch statement will check if the change is legal
+            bool vehicleMove = (vehicleSignal_input == CurrentVehicleSignalState);
+            bool pedestrianMove = (pedestrianSignal_input == CurrentPedestrianSignalState);
+
+            switch (CurrentVehicleSignalState) // correct lights sequence
+            {
+                case "red":
+                    if (vehicleSignal_input == "redamber")
+                    {
+                        vehicleMove = true;
+                    }
+                    break;
+                case "redamber":
+                    if (vehicleSignal_input == "green")
+                    {
+                        vehicleMove = true;
+                    }
+                    break;
+                case "green":
+                    if (vehicleSignal_input == "amber")
+                    {
+                        vehicleMove = true;
+                    }
+                    break;
+                case "amber":
+                    if (vehicleSignal_input == "red")
+                    {
+                        vehicleMove = true;
+                    }
+                    break;
+            }
+
+            switch (CurrentPedestrianSignalState) // toggle correct pedestrian sequence
+            {
+                case "walk":
+                    if (pedestrianSignal_input == "wait")
+                    {
+                        pedestrianMove = true;
+                    }
+                    break;
+                case "wait":
+                    if (pedestrianSignal_input == "walk")
+                    {
+                        pedestrianMove = true;
+                    }
+                    break;
+            }
+
+            if (vehicleMove && pedestrianMove)
+            {
+                CurrentVehicleSignalState = vehicleSignal_input;
+                CurrentPedestrianSignalState = pedestrianSignal_input;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
