@@ -12,15 +12,35 @@ namespace SmartTrafficController
         private string CurrentVehicleSignalState;
         private string CurrentPedestrianSignalState;
 
-
         public TrafficController(string id)
+        {
+            intersectionID = id.ToLower();
+            //L1R4
+            CurrentVehicleSignalState = "amber";
+            CurrentPedestrianSignalState = "wait";
+        }
+
+
+        public TrafficController(string id, string vehicleStartState, string pedestrianStartState) // This class initializes a new instance of the TrafficController with more signal states
         {
             //L1R1 - L1R2
             intersectionID = id.ToLower();
 
-            //L1R4
-            CurrentVehicleSignalState = "amber";
-            CurrentPedestrianSignalState = "wait";
+
+            string vehicle_state = vehicleStartState.ToLower();
+            string pedestrian_state = pedestrianStartState.ToLower();
+
+            bool vehicleValid = (vehicle_state == "red" || vehicle_state == "redamber" || vehicle_state == "green" || vehicle_state == "amber");
+            bool pedestrianValid = (pedestrian_state == "wait" || pedestrian_state == "walk");
+
+            if (!vehicleValid || !pedestrianValid)
+            {
+                throw new ArgumentException("Argument Exception: TrafficController can only be initialised to the following states: 'green', 'amber', 'red', ‘redamber’ for the vehicle signals and ‘wait’ or ‘walk’ for the pedestrian signal");
+            }
+
+            CurrentVehicleSignalState = vehicle_state;
+            CurrentPedestrianSignalState = pedestrian_state;
+
 
 
         }
