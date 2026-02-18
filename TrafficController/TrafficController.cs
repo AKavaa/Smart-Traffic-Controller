@@ -163,25 +163,29 @@ namespace SmartTrafficController
         }
         public interface IVehicleSignalManager
         {
+            bool validTransition(string currentState, string newState);
 
         }
 
         public interface IPedestrianSignalManager
         {
+            bool validTransition(string currentState, string newState);
 
         }
 
         public interface ITimeManager
         {
-
+            bool valiTiming(string seconds);
         }
 
         public interface IWebService
         {
+            bool logEvent(string message);
 
         }
         public interface IEmailService
         {
+            bool logEmail(string emailMessage);
 
         }
 
