@@ -192,6 +192,11 @@ namespace SmartTrafficController
         TrafficController(string id, IVehicleSignalManager iVehicleSignalManager, IPedestrianSignalManager iPedestrianSignalManager, ITimeManager iTimeManager, IWebService iWebService, IEmailService iEmailService)
         {
 
+            intersectionID = id.ToLower();
+
+            CurrentVehicleSignalState = "amber";
+            CurrentPedestrianSignalState = "wait";
+
         }
     }
 }
