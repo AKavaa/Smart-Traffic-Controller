@@ -1,5 +1,9 @@
 ﻿using System;
 
+
+
+
+
 namespace SmartTrafficController
 {
 
@@ -157,6 +161,33 @@ namespace SmartTrafficController
             }
 
         }
+        public interface IVehicleSignalManager
+        {
 
+        }
+
+        public interface IPedestrianSignalManager
+        {
+
+        }
+
+        public interface ITimeManager
+        {
+
+        }
+
+        public interface IWebService
+        {
+
+        }
+        public interface IEmailService
+        {
+
+        }
+
+        TrafficController(string id, IVehicleSignalManager iVehicleSignalManager, IPedestrianSignalManager iPedestrianSignalManager, ITimeManager iTimeManager, IWebService iWebService, IEmailService iEmailService)
+        {
+
+        }
     }
 }
