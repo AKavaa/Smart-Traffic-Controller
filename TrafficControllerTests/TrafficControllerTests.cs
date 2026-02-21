@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using SmartTrafficController;
+using NSubstitute;
 
 
 
@@ -62,10 +63,38 @@ namespace SmartTrafficControllerTests
 
             //Assert
             Assert.That(result, Is.EqualTo(true));
+        }
 
+        [Test]
+        public void CheckStatus_AllOK_ReturnsTrue()
+        {
 
+            //Arrange
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            FakeVehicle.GetStatus().Returns("VehicleSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,");
+            var controller = new TrafficController("test", FakeVehicle);
 
+            // Act
+            bool result = controller.CheckStatus();
 
+            // Assert
+            Assert.That(result, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void CheckStatus_FaultDetected_ReturnsFalse()
+        {
+
+            //Arrange
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            FakeVehicle.GetStatus().Returns("VehicleSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,");
+            var controller = new TrafficController("test", FakeVehicle);
+
+            // Act
+            bool result = controller.CheckStatus();
+
+            // Assert
+            Assert.That(result, Is.EqualTo(false));
         }
 
 

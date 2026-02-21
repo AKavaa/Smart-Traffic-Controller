@@ -8,6 +8,35 @@
 namespace SmartTrafficController
 {
 
+    public interface IVehicleSignalManager
+    {
+        string GetStatus();
+
+    }
+
+    public interface IPedestrianSignalManager
+    {
+        string GetStatus();
+
+    }
+
+    public interface ITimeManager
+    {
+        string GetStatus();
+    }
+
+    public interface IWebService
+    {
+        bool logEvent(string message);
+
+    }
+    public interface IEmailService
+    {
+        bool logEmail(string emailMessage);
+
+    }
+
+
 
     public class TrafficController
     {
@@ -17,12 +46,16 @@ namespace SmartTrafficController
         private string CurrentVehicleSignalState;
         private string CurrentPedestrianSignalState;
 
+        private IVehicleSignalManager _vehicleManager;
+
         public TrafficController(string id)
         {
             intersectionID = id.ToLower();
             //L1R4
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
+            _vehicleManager = null!; //! suppress compiler warnings
+
         }
 
 
@@ -30,6 +63,7 @@ namespace SmartTrafficController
         {
             //L1R1 - L1R2
             intersectionID = id.ToLower();
+            _vehicleManager = null!;
 
 
             string vehicle_state = vehicleStartState.ToLower();
@@ -162,42 +196,37 @@ namespace SmartTrafficController
             }
 
         }
-        public interface IVehicleSignalManager
-        {
-            bool validTransition(string currentState, string newState);
 
-        }
-
-        public interface IPedestrianSignalManager
-        {
-            bool validTransition(string currentState, string newState);
-
-        }
-
-        public interface ITimeManager
-        {
-            bool valiTiming(string seconds);
-        }
-
-        public interface IWebService
-        {
-            bool logEvent(string message);
-
-        }
-        public interface IEmailService
-        {
-            bool logEmail(string emailMessage);
-
-        }
-
-        TrafficController(string id, IVehicleSignalManager iVehicleSignalManager, IPedestrianSignalManager iPedestrianSignalManager, ITimeManager iTimeManager, IWebService iWebService, IEmailService iEmailService)
+        public TrafficController(string id, IVehicleSignalManager iVehicleSignalManager, IPedestrianSignalManager iPedestrianSignalManager, ITimeManager iTimeManager, IWebService iWebService, IEmailService iEmailService)
         {
 
             intersectionID = id.ToLower();
 
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
+            _vehicleManager = iVehicleSignalManager;
 
         }
+
+        public TrafficController(string id, IVehicleSignalManager vehicleSignal) // fake vehicle constructor 
+        {
+            intersectionID = id.ToLower();
+
+            CurrentVehicleSignalState = "amber";
+            CurrentPedestrianSignalState = "wait";
+            _vehicleManager = vehicleSignal;
+
+        }
+
+        // check status method for future tests
+
+        public bool CheckStatus()
+        {
+            string status = _vehicleManager.GetStatus();
+            return !status.Contains("FAULT");
+
+        }
+
     }
+
 }
