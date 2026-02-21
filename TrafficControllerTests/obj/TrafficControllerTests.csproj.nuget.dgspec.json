@@ -4,14 +4,14 @@
     "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj": {}
   },
   "projects": {
-    "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj": {
+    "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/TrafficController.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj",
-        "projectName": "TrafficControllerTests",
-        "projectPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj",
+        "projectUniqueName": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/TrafficController.csproj",
+        "projectName": "TrafficController",
+        "projectPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/TrafficController.csproj",
         "packagesPath": "/Users/alexkavaleuskiy/.nuget/packages/",
-        "outputPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/obj/",
+        "outputPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/alexkavaleuskiy/.nuget/NuGet/NuGet.Config"
@@ -43,10 +43,81 @@
       "frameworks": {
         "net9.0": {
           "targetAlias": "net9.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.305/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj",
+        "projectName": "TrafficControllerTests",
+        "projectPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/TrafficControllerTests.csproj",
+        "packagesPath": "/Users/alexkavaleuskiy/.nuget/packages/",
+        "outputPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficControllerTests/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/Users/alexkavaleuskiy/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net9.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net9.0": {
+            "targetAlias": "net9.0",
+            "projectReferences": {
+              "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/TrafficController.csproj": {
+                "projectPath": "/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/TrafficController.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        },
+        "SdkAnalysisLevel": "9.0.300"
+      },
+      "frameworks": {
+        "net9.0": {
+          "targetAlias": "net9.0",
           "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.8.0, )"
+            },
             "NUnit": {
               "target": "Package",
               "version": "[4.4.0, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.5.0, )"
             }
           },
           "imports": [

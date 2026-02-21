@@ -1,0 +1,12 @@
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.GeneratedMSBuildEditorConfig.editorconfig
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.AssemblyInfoInputs.cache
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.AssemblyInfo.cs
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.csproj.CoreCompileInputs.cache
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.sourcelink.json
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/bin/Debug/net9.0/TrafficController.deps.json
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/bin/Debug/net9.0/TrafficController.dll
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/bin/Debug/net9.0/TrafficController.pdb
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.dll
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/refint/TrafficController.dll
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/TrafficController.pdb
+/Users/alexkavaleuskiy/Smart-Traffic-Controller/TrafficController/obj/Debug/net9.0/ref/TrafficController.dll

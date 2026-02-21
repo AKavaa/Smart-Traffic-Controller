@@ -1,26 +1,31 @@
 ﻿using NUnit.Framework;
 using System;
+using SmartTrafficController;
 
 
-[TestFixture]
-class TrafficControllerTests
+
+namespace SmartTrafficControllerTests
 {
-    // This test checks if the project template is correctly set up on your machine.
-    // Uncomment the test method below and verify that it appears in the Test Explorer (Test -> Test Explorer).
-    // Running the unit test should pass with the message "Example Test Passed."
-    // If the test is not visible, doesn't run, or fails: ask a tutor for assistance.
-    // Once you confirm the template runs unit tests successfully, you can delete this test and comment.
+    [TestFixture]
+    public class TrafficControllerTests
+    {
+        [Test]
+        public void InitialiseState_SetAmberAndWait()   // L1R4 (initial state amber)
+        {
+            // Arrange 
+            var controller = new TrafficController("test");
 
-    //[Test]
-    //public void TemplateTest()
-    //{
-    //    Assert.Pass("Example Test Passed!");
-    //}
+            //Act
+            string result = controller.GetCurrentVehicleSignalState();
+
+            //Assert
+
+            Assert.That(result, Is.EqualTo("amber"));
+
+        }
 
 
-    //use the following naming convention for your test method names MethodBeingTested_TestScenario_ExpectedOutput
-    //E.g. SetCurrentState_InvalidState_ReturnsFalse
 
-    //Write Test Code Here...
+    }
 
 }
