@@ -47,9 +47,18 @@ namespace SmartTrafficControllerTests
             controller.SetIntersectionID("SOUTH");
 
             //Assert
-            Assert.That(controller.GetIntersectionID, Is.EqualTo("south"));
+            Assert.That(controller.GetIntersectionID(), Is.EqualTo("south"));
         }
 
+        [Test]
+        public void ConstructorInitialise_ToLowerCase()
+        {
+            //Arranne + Act
+            var controller = new TrafficController("SOUTH");
+
+            //Assert
+            Assert.That(controller.GetIntersectionID(), Is.EqualTo("south"));
+        }
         [Test]
         public void InitialiseState_SetStateDirect_returnTrue() //L1R5
         {
@@ -64,6 +73,21 @@ namespace SmartTrafficControllerTests
             //Assert
             Assert.That(result, Is.EqualTo(true));
         }
+        [Test]
+
+        public void InitialiseState_SetStateDirect_returnFalse() //L1R5 
+        {
+            //Arrange
+            var controller = new TrafficController("test");
+
+            //Act
+            var result = controller.SetStateDirect("purple", "wait");
+
+            //Assert
+            Assert.That(result, Is.EqualTo(false));
+
+        }
+
 
         [Test]
         public void CheckStatus_AllOK_ReturnsTrue()
@@ -96,8 +120,6 @@ namespace SmartTrafficControllerTests
             // Assert
             Assert.That(result, Is.EqualTo(false));
         }
-
-
 
     }
 
