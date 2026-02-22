@@ -51,7 +51,7 @@ namespace SmartTrafficControllerTests
         }
 
         [Test]
-        public void ConstructorInitialise_ToLowerCase()
+        public void ConstructorInitialise_ToLowerCase() //L1R2
         {
             //Arranne + Act
             var controller = new TrafficController("SOUTH");
@@ -90,7 +90,7 @@ namespace SmartTrafficControllerTests
 
 
         [Test]
-        public void CheckStatus_AllOK_ReturnsTrue()
+        public void CheckStatus_AllOK_ReturnsTrue() //L3
         {
 
             //Arrange
@@ -106,7 +106,7 @@ namespace SmartTrafficControllerTests
         }
 
         [Test]
-        public void CheckStatus_FaultDetected_ReturnsFalse()
+        public void CheckStatus_FaultDetected_ReturnsFalse() //L3
         {
 
             //Arrange
@@ -119,6 +119,26 @@ namespace SmartTrafficControllerTests
 
             // Assert
             Assert.That(result, Is.EqualTo(false));
+        }
+
+        [Test] //L1R5
+        [TestCase("amber", "walk", true)] // test 1 valid inputs - expects true
+        [TestCase("green", "wait", true)] // test 2 valid inputs - expects true
+        [TestCase("blue", "sprinting", false)] // test 3 invalid inputs - expects false
+        [TestCase("purple", "wait", false)] // test 4 invalid inputs - expects false
+
+        public void SetStateDirect_ManyInputs_ReturnsExpected(string vehicle, string pedestrian, bool expected)
+        {
+            //Arrange
+            var controller = new TrafficController("test");
+
+            //Act
+            bool result = controller.SetStateDirect(vehicle, pedestrian);
+
+            //Assert
+            Assert.That(result, Is.EqualTo(expected));
+
+
         }
 
     }
