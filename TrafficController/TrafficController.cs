@@ -46,7 +46,10 @@ namespace SmartTrafficController
         private string CurrentVehicleSignalState;
         private string CurrentPedestrianSignalState;
 
-        private IVehicleSignalManager _vehicleManager;
+        private IVehicleSignalManager vehicle_manager;
+        private IPedestrianSignalManager pedestrian_manager;
+        private ITimeManager time_manager;
+
 
         public TrafficController(string id)
         {
@@ -54,7 +57,10 @@ namespace SmartTrafficController
             //L1R4
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
-            _vehicleManager = null!; //! suppress compiler warnings
+            vehicle_manager = null!; //! suppress compiler warnings
+            pedestrian_manager = null!;
+            time_manager = null!;
+
 
         }
 
@@ -63,7 +69,9 @@ namespace SmartTrafficController
         {
             //L1R1 - L1R2
             intersectionID = id.ToLower();
-            _vehicleManager = null!;
+            vehicle_manager = null!;
+            pedestrian_manager = null!;
+            time_manager = null!;
 
 
             string vehicle_state = vehicleStartState.ToLower();
@@ -204,7 +212,9 @@ namespace SmartTrafficController
 
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
-            _vehicleManager = iVehicleSignalManager;
+            vehicle_manager = iVehicleSignalManager;
+            pedestrian_manager = iPedestrianSignalManager;
+            time_manager = iTimeManager;
 
         }
 
@@ -214,7 +224,10 @@ namespace SmartTrafficController
 
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
-            _vehicleManager = vehicleSignal;
+            vehicle_manager = vehicleSignal;
+            pedestrian_manager = null!;
+            time_manager = null!;
+
 
         }
 
@@ -222,10 +235,24 @@ namespace SmartTrafficController
 
         public bool CheckStatus()
         {
-            string status = _vehicleManager.GetStatus();
+            string status = vehicle_manager.GetStatus();
             return !status.Contains("FAULT");
 
         }
+
+        public string GetStatusReport() // L2R4
+        {
+            // Getting the status of the each class 
+            string vehicleStatus = vehicle_manager.GetStatus();
+            string pedestrianStatus = pedestrian_manager.GetStatus();
+            string timeStatus = time_manager.GetStatus();
+
+            // returning all the strings as a single string 
+            return vehicleStatus + pedestrianStatus + timeStatus;
+
+        }
+
+
 
     }
 
