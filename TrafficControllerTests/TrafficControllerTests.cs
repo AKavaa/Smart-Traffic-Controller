@@ -95,8 +95,10 @@ namespace SmartTrafficControllerTests
 
             //Arrange
             var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
             FakeVehicle.GetStatus().Returns("VehicleSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,");
-            var controller = new TrafficController("test", FakeVehicle);
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime);
 
             // Act
             bool result = controller.CheckStatus();
@@ -111,8 +113,10 @@ namespace SmartTrafficControllerTests
 
             //Arrange
             var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
             FakeVehicle.GetStatus().Returns("VehicleSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,");
-            var controller = new TrafficController("test", FakeVehicle);
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime);
 
             // Act
             bool result = controller.CheckStatus();
@@ -141,6 +145,30 @@ namespace SmartTrafficControllerTests
 
         }
 
+        [Test]
+        public void GetStatusReport_GetAllStatuses() // L2R4 checks the statuses of vehicle, pedestrian and time and returns the combined output
+        {
+            //Arrange
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+
+            FakeVehicle.GetStatus().Returns("VehiclesSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,");
+            FakePedestrian.GetStatus().Returns("PedestrianSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,");
+            FakeTime.GetStatus().Returns("Timer,OK,FAULT,OK,OK,OK,OK,FAULT,OK,OK,");
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime);
+
+            // Act
+            string result = controller.GetStatusReport();
+
+
+            // Assert
+            Assert.That(result, Is.EqualTo("VehiclesSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,PedestrianSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,Timer,OK,FAULT,OK,OK,OK,OK,FAULT,OK,OK,"));
+        }
+
     }
 
+
 }
+
+

@@ -218,18 +218,20 @@ namespace SmartTrafficController
 
         }
 
-        public TrafficController(string id, IVehicleSignalManager vehicleSignal) // fake vehicle constructor 
+        public TrafficController(string id, IVehicleSignalManager vehicleSignal, IPedestrianSignalManager pedestrianSignal, ITimeManager timeSignal) // fake vehicle, pedestrian, time constructor 
         {
             intersectionID = id.ToLower();
 
             CurrentVehicleSignalState = "amber";
             CurrentPedestrianSignalState = "wait";
             vehicle_manager = vehicleSignal;
-            pedestrian_manager = null!;
-            time_manager = null!;
+            pedestrian_manager = pedestrianSignal;
+            time_manager = timeSignal;
 
 
         }
+
+
 
         // check status method for future tests
 
