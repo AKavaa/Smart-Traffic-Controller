@@ -87,6 +87,37 @@ namespace SmartTrafficControllerTests
             Assert.That(result, Is.EqualTo(false));
 
         }
+        [Test]
+        public void SetCurrentState_IsValid_ReturnsTrue() //L2R1
+        {
+
+            //Arrange 
+            var controller = new TrafficController("test");
+
+            //Act
+            var result = controller.SetCurrentState("red", "walk");
+            // starting color is amber so the next following color is red so its true
+
+            // Assert
+            Assert.That(result, Is.EqualTo(true));
+
+        }
+
+        [Test]
+        public void SetCurrentState_IsInvalid_ReturnsFalse() //L2R1
+        {
+
+            //Arrange 
+            var controller = new TrafficController("test");
+
+            //Act
+            var result = controller.SetCurrentState("green", "walk");
+            // starting color is amber so the next following color cannot be green
+
+            // Assert
+            Assert.That(result, Is.EqualTo(false));
+
+        }
 
 
         [Test]
