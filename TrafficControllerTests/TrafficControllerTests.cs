@@ -2,6 +2,8 @@
 using System;
 using SmartTrafficController;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
+#nullable disable // overrides compiler's nullable annotations 
 
 
 
@@ -173,6 +175,21 @@ namespace SmartTrafficControllerTests
             //Assert
             Assert.That(result, Is.EqualTo(expected));
 
+
+        }
+
+        [Test]
+        public void Constructor_InvalidState_ThrowArgumentException() // L2R2
+        {
+            // Arrange + Act
+            var exception = Assert.Throws<ArgumentException>(() => new TrafficController("test", "pink", "run"));
+
+
+            Console.WriteLine(exception.Message); // output the message into the console
+
+            //Assert
+            // checks if the exception message is identical
+            Assert.That(exception.Message, Is.EqualTo("Argument Exception: TrafficController can only be initialised to the following states: 'green', 'amber', 'red', ‘redamber’ for the vehicle signals and ‘wait’ or ‘walk’ for the pedestrian signal"));
 
         }
 
