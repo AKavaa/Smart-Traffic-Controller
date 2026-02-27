@@ -11,18 +11,22 @@ namespace SmartTrafficController
     public interface IVehicleSignalManager
     {
         string GetStatus();
+        bool SetAllRed();
 
     }
 
     public interface IPedestrianSignalManager
     {
         string GetStatus();
+        bool Walk();
+        bool SetAudible();
 
     }
 
     public interface ITimeManager
     {
         string GetStatus();
+        bool Wait(int seconds);
     }
 
     public interface IWebService
@@ -152,6 +156,7 @@ namespace SmartTrafficController
                 case "red":
                     if (vehicleSignal_input == "redamber")
                     {
+
                         vehicleMove = true;
                     }
                     break;
@@ -170,7 +175,22 @@ namespace SmartTrafficController
                 case "amber":
                     if (vehicleSignal_input == "red")
                     {
-                        vehicleMove = true;
+                        // L3R1
+                        bool wait = time_manager.Wait(3); // wait 3 seconds
+                        bool set_all_red = vehicle_manager.SetAllRed(); // set all to red
+                        bool walk = pedestrian_manager.Walk(); // wall 
+                        bool audible = pedestrian_manager.SetAudible(); // set to audible 
+
+                        if (wait && set_all_red && walk && audible)
+                        {
+                            vehicleMove = true;
+
+                        }
+                        else
+                        {
+                            return false; // return false if any fail
+                        }
+
                     }
                     break;
             }

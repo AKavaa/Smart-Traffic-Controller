@@ -190,7 +190,6 @@ namespace SmartTrafficControllerTests
             //Assert
             // checks if the exception message is identical
             Assert.That(exception.Message, Is.EqualTo("Argument Exception: TrafficController can only be initialised to the following states: 'green', 'amber', 'red', ‘redamber’ for the vehicle signals and ‘wait’ or ‘walk’ for the pedestrian signal"));
-
         }
 
         [Test]
