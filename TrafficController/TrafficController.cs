@@ -173,8 +173,6 @@ namespace SmartTrafficController
                         bool set_all_green = vehicle_manager.SetAllGreen(true);
                         bool move = time_manager.Move(120);
 
-
-
                         vehicleMove = (walk && audible && wait && set_all_green && move) ? true : false;
 
 
@@ -208,16 +206,11 @@ namespace SmartTrafficController
             switch (CurrentPedestrianSignalState) // toggle correct pedestrian sequence
             {
                 case "walk":
-                    if (pedestrianSignal_input == "wait")
-                    {
-                        pedestrianMove = true;
-                    }
+                    if (pedestrianSignal_input == "wait") { pedestrianMove = true; }
                     break;
+
                 case "wait":
-                    if (pedestrianSignal_input == "walk")
-                    {
-                        pedestrianMove = true;
-                    }
+                    if (pedestrianSignal_input == "walk") { pedestrianMove = true; }
                     break;
             }
 
