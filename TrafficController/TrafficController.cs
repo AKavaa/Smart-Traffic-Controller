@@ -12,14 +12,16 @@ namespace SmartTrafficController
     {
         string GetStatus();
         bool SetAllRed();
+        bool SetAllGreen(bool on);
 
     }
 
     public interface IPedestrianSignalManager
     {
         string GetStatus();
-        bool Walk();
-        bool SetAudible();
+        bool SetWalk(bool on);
+        bool SetAudible(bool on);
+        bool SetWait(bool on);
 
     }
 
@@ -27,6 +29,7 @@ namespace SmartTrafficController
     {
         string GetStatus();
         bool Wait(int seconds);
+        bool Move(int seconds);
     }
 
     public interface IWebService
@@ -163,7 +166,19 @@ namespace SmartTrafficController
                 case "redamber":
                     if (vehicleSignal_input == "green")
                     {
-                        vehicleMove = true;
+                        // L3R2
+                        bool walk = pedestrian_manager.SetWalk(false); // false -> disabled
+                        bool audible = pedestrian_manager.SetAudible(false);
+                        bool wait = pedestrian_manager.SetWait(true);
+                        bool set_all_green = vehicle_manager.SetAllGreen(true);
+                        bool move = time_manager.Move(120);
+
+
+
+                        vehicleMove = (walk && audible && wait && set_all_green && move) ? true : false;
+
+
+
                     }
                     break;
                 case "green":
@@ -178,18 +193,13 @@ namespace SmartTrafficController
                         // L3R1
                         bool wait = time_manager.Wait(3); // wait 3 seconds
                         bool set_all_red = vehicle_manager.SetAllRed(); // set all to red
-                        bool walk = pedestrian_manager.Walk(); // wall 
-                        bool audible = pedestrian_manager.SetAudible(); // set to audible 
+                        bool walk = pedestrian_manager.SetWalk(true); // wall 
+                        bool audible = pedestrian_manager.SetAudible(true); // set to audible 
+                        bool move = time_manager.Move(60);
 
-                        if (wait && set_all_red && walk && audible)
-                        {
-                            vehicleMove = true;
+                        vehicleMove = (wait && set_all_red && walk && audible && move) ? true : false;
 
-                        }
-                        else
-                        {
-                            return false; // return false if any fail
-                        }
+
 
                     }
                     break;
