@@ -34,7 +34,8 @@ namespace SmartTrafficController
 
     public interface IWebService
     {
-        bool logEvent(string message);
+        bool LogEngineerRequired(string message);
+        bool FaultDetected(bool on);
 
     }
     public interface IEmailService
@@ -56,6 +57,7 @@ namespace SmartTrafficController
         private IVehicleSignalManager vehicle_manager;
         private IPedestrianSignalManager pedestrian_manager;
         private ITimeManager time_manager;
+        private IWebService webService_manager;
 
 
         public TrafficController(string id)
@@ -67,6 +69,7 @@ namespace SmartTrafficController
             vehicle_manager = null!; //! suppress compiler warnings
             pedestrian_manager = null!;
             time_manager = null!;
+            webService_manager = null!;
 
 
         }
@@ -79,6 +82,7 @@ namespace SmartTrafficController
             vehicle_manager = null!;
             pedestrian_manager = null!;
             time_manager = null!;
+            webService_manager = null!;
 
 
             string vehicle_state = vehicleStartState.ToLower();
@@ -173,7 +177,19 @@ namespace SmartTrafficController
                         bool set_all_green = vehicle_manager.SetAllGreen(true);
                         bool move = time_manager.Move(120);
 
-                        vehicleMove = (walk && audible && wait && set_all_green && move) ? true : false;
+                        if (walk && audible && wait && set_all_green && move)
+                        {
+                            vehicleMove = true;
+                        }
+                        else
+                        {
+                            // L3R3
+                            webService_manager.FaultDetected(true); // Fault detection detected
+                            webService_manager.LogEngineerRequired("out of service"); // appropriate message shown 
+                            CurrentPedestrianSignalState = "oosp"; // changing states for pedestrian
+                            CurrentVehicleSignalState = "oosv"; // changing states for vehicle
+                            return false;
+                        }
 
 
 
@@ -195,7 +211,20 @@ namespace SmartTrafficController
                         bool audible = pedestrian_manager.SetAudible(true); // set to audible 
                         bool move = time_manager.Move(60);
 
-                        vehicleMove = (wait && set_all_red && walk && audible && move) ? true : false;
+                        if (wait && set_all_red && walk && audible && move)
+                        {
+                            vehicleMove = true;
+                        }
+                        else
+                        {
+                            // L3R3
+                            webService_manager.FaultDetected(true); // Fault detection detected
+                            webService_manager.LogEngineerRequired("out of service"); // appropriate message shown 
+                            CurrentPedestrianSignalState = "oosp"; // changing states for pedestrian
+                            CurrentVehicleSignalState = "oosv"; // changing states for vehicle
+                            return false;
+
+                        }
 
 
 
@@ -238,6 +267,7 @@ namespace SmartTrafficController
             vehicle_manager = iVehicleSignalManager;
             pedestrian_manager = iPedestrianSignalManager;
             time_manager = iTimeManager;
+            webService_manager = iWebService;
 
         }
 
@@ -250,6 +280,7 @@ namespace SmartTrafficController
             vehicle_manager = vehicleSignal;
             pedestrian_manager = pedestrianSignal;
             time_manager = timeSignal;
+            webService_manager = null!;
 
 
         }
