@@ -40,7 +40,7 @@ namespace SmartTrafficController
     }
     public interface IEmailService
     {
-        bool logEmail(string emailMessage);
+        string SendMail(string emailAddress, string subject, string message);
 
     }
 
@@ -58,6 +58,7 @@ namespace SmartTrafficController
         private IPedestrianSignalManager pedestrian_manager;
         private ITimeManager time_manager;
         private IWebService webService_manager;
+        private IEmailService email_manager;
 
 
         public TrafficController(string id)
@@ -70,6 +71,7 @@ namespace SmartTrafficController
             pedestrian_manager = null!;
             time_manager = null!;
             webService_manager = null!;
+            email_manager = null!;
 
 
         }
@@ -83,6 +85,7 @@ namespace SmartTrafficController
             pedestrian_manager = null!;
             time_manager = null!;
             webService_manager = null!;
+            email_manager = null!;
 
 
             string vehicle_state = vehicleStartState.ToLower();
@@ -185,9 +188,26 @@ namespace SmartTrafficController
                         {
                             // L3R3
                             webService_manager.FaultDetected(true); // Fault detection detected
-                            webService_manager.LogEngineerRequired("out of service"); // appropriate message shown 
+                            try
+                            {
+                                // L3R5
+                                webService_manager.LogEngineerRequired("out of service");// appropriate message shown 
+
+                            }
+                            catch (Exception exception)
+                            {
+                                email_manager.SendMail( // SendMail method taked 3 parameteers
+                                    "transportoffice@gmail.com",
+                                    "failed to log out of service",
+                                    exception.Message
+                                );
+                            }
+
+
                             CurrentPedestrianSignalState = "oosp"; // changing states for pedestrian
                             CurrentVehicleSignalState = "oosv"; // changing states for vehicle
+
+
                             return false;
                         }
 
@@ -219,7 +239,22 @@ namespace SmartTrafficController
                         {
                             // L3R3
                             webService_manager.FaultDetected(true); // Fault detection detected
-                            webService_manager.LogEngineerRequired("out of service"); // appropriate message shown 
+
+                            try
+                            {
+                                // L3R5
+                                webService_manager.LogEngineerRequired("out of service");// appropriate message shown 
+
+                            }
+                            catch (Exception exception) // if LogEngineerRequired throws exception, email with exception is sent 
+                            {
+                                email_manager.SendMail( // SendMail method taked 3 parameteers
+                                    "transportoffice@gmail.com",
+                                    "failed to log out of service",
+                                    exception.Message
+                                );
+                            }
+
                             CurrentPedestrianSignalState = "oosp"; // changing states for pedestrian
                             CurrentVehicleSignalState = "oosv"; // changing states for vehicle
                             return false;
@@ -268,6 +303,7 @@ namespace SmartTrafficController
             pedestrian_manager = iPedestrianSignalManager;
             time_manager = iTimeManager;
             webService_manager = iWebService;
+            email_manager = iEmailService;
 
         }
 
@@ -281,6 +317,7 @@ namespace SmartTrafficController
             pedestrian_manager = pedestrianSignal;
             time_manager = timeSignal;
             webService_manager = null!;
+            email_manager = null!;
 
 
         }
