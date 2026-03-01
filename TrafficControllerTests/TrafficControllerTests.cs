@@ -93,8 +93,22 @@ namespace SmartTrafficControllerTests
         public void SetCurrentState_IsValid_ReturnsTrue() //L2R1
         {
 
-            //Arrange 
-            var controller = new TrafficController("test");
+            //Arrange
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+            FakeTime.Wait(3).Returns(true);
+            FakeVehicle.SetAllRed().Returns(true);
+            FakePedestrian.SetWalk(true).Returns(true);
+            FakePedestrian.SetAudible(true).Returns(true);
+            FakeTime.Move(60).Returns(true);
+
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+
 
             //Act
             var result = controller.SetCurrentState("red", "walk");
@@ -199,11 +213,13 @@ namespace SmartTrafficControllerTests
             var FakeVehicle = Substitute.For<IVehicleSignalManager>();
             var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
             var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
 
             FakeVehicle.GetStatus().Returns("VehiclesSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,");
             FakePedestrian.GetStatus().Returns("PedestrianSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,");
             FakeTime.GetStatus().Returns("Timer,OK,FAULT,OK,OK,OK,OK,FAULT,OK,OK,");
-            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime);
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
 
             // Act
             string result = controller.GetStatusReport();
@@ -213,6 +229,39 @@ namespace SmartTrafficControllerTests
             Assert.That(result, Is.EqualTo("VehiclesSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,PedestrianSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,Timer,OK,FAULT,OK,OK,OK,OK,FAULT,OK,OK,"));
         }
 
+        [Test]
+        public void SetCurrentState_AmbeerToRed_MethodsCalledCorrectly_ReturnsTrue() // Test for L3R1
+        {
+            // Arrange
+
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+            FakeTime.Wait(3).Returns(true);
+            FakeVehicle.SetAllRed().Returns(true);
+            FakePedestrian.SetWalk(true).Returns(true);
+            FakePedestrian.SetAudible(true).Returns(true);
+            FakeTime.Move(60).Returns(true);
+
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+
+            // Act
+            bool result = controller.SetCurrentState("Red", "walk");
+
+            //Assert
+
+            Assert.That(result, Is.EqualTo(true));
+            FakeTime.Received().Wait(3); // NSubstitute method that verifies that the mock object was actually called 
+            FakeVehicle.Received().SetAllRed();
+            FakePedestrian.Received().SetWalk(true);
+            FakePedestrian.Received().SetAudible(true);
+            FakeTime.Received().Move(60);
+
+        }
     }
 
 
