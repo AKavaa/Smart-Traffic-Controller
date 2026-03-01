@@ -303,8 +303,35 @@ namespace SmartTrafficController
             string pedestrianStatus = pedestrian_manager.GetStatus();
             string timeStatus = time_manager.GetStatus();
 
+            string faultMessage = "";
+
+            // check each status for FAULT
+            if (vehicleStatus.Contains("FAULT"))
+            {
+                faultMessage += "VehicleSignal,";
+            }
+            if (pedestrianStatus.Contains("FAULT"))
+            {
+                faultMessage += "PedestrianSignal,";
+            }
+
+            if (timeStatus.Contains("FAULT"))
+            {
+                faultMessage += "Timer,";
+            }
+
+            // log is activated only if there is a fault
+            if (faultMessage != "")
+            {
+                webService_manager.LogEngineerRequired(faultMessage);
+            }
+
+
+
             // returning all the strings as a single string 
             return vehicleStatus + pedestrianStatus + timeStatus;
+
+
 
         }
 
