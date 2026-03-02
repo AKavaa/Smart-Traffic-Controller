@@ -300,8 +300,35 @@ namespace SmartTrafficControllerTests
             FakeTime.Received().Wait(3);
             FakeTime.Received().Move(120);
 
-
         }
+        [Test]
+        public void SetCurrentState_FaultDetected_SetOosvState() // L3R3 trigger oosv change
+        {
+            // Arrange
+
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+            FakeTime.Wait(3).Returns(false); // failure simulation to enable fault detection
+
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+            // Act
+
+            bool result = controller.SetCurrentState("red", "walk");
+
+            //Assert
+
+            Assert.That(result, Is.EqualTo(false)); // fault path is always false
+            Assert.That(controller.GetCurrentVehicleSignalState(), Is.EqualTo("oosv"));
+            Assert.That(controller.GetCurrentPedestrianSignalState(), Is.EqualTo("oosp"));
+            FakeWebService.Received().FaultDetected(true); // Fault detected is true
+            FakeWebService.Received().LogEngineerRequired("out of service"); // appropriate message shown
+        }
+
     }
 
 
