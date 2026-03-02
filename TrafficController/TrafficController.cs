@@ -177,10 +177,11 @@ namespace SmartTrafficController
                         bool walk = pedestrian_manager.SetWalk(false); // false -> disabled
                         bool audible = pedestrian_manager.SetAudible(false);
                         bool wait = pedestrian_manager.SetWait(true);
+                        bool waitFirst = time_manager.Wait(3);
                         bool set_all_green = vehicle_manager.SetAllGreen(true);
                         bool move = time_manager.Move(120);
 
-                        if (walk && audible && wait && set_all_green && move)
+                        if (walk && audible && wait && set_all_green && move && waitFirst)
                         {
                             vehicleMove = true;
                         }

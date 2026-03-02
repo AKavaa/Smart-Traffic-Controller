@@ -278,6 +278,7 @@ namespace SmartTrafficControllerTests
             FakePedestrian.SetAudible(false).Returns(true);
             FakePedestrian.SetWait(true).Returns(true);
             FakeVehicle.SetAllGreen(true).Returns(true);
+            FakeTime.Wait(3).Returns(true);
             FakeTime.Move(120).Returns(true);
 
 
@@ -296,6 +297,7 @@ namespace SmartTrafficControllerTests
             FakePedestrian.Received().SetWalk(false);
             FakePedestrian.Received().SetWait(true);
             FakePedestrian.Received().SetAudible(false);
+            FakeTime.Received().Wait(3);
             FakeTime.Received().Move(120);
 
 
