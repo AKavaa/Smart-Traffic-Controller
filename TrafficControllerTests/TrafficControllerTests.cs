@@ -230,7 +230,7 @@ namespace SmartTrafficControllerTests
         }
 
         [Test]
-        public void SetCurrentState_AmbeerToRed_MethodsCalledCorrectly_ReturnsTrue() // Test for L3R1
+        public void SetCurrentState_AmberToRed_MethodsCalledCorrectly_ReturnsTrue() // Test for L3R1
         {
             // Arrange
 
@@ -260,6 +260,44 @@ namespace SmartTrafficControllerTests
             FakePedestrian.Received().SetWalk(true);
             FakePedestrian.Received().SetAudible(true);
             FakeTime.Received().Move(60);
+
+        }
+
+        [Test]
+        public void SetCurrentState_RedAmberToGreen_MethodsCalledCorrectly_ReturnsTrue() //Test for L3R2
+        {
+            // Arrange
+
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+            FakePedestrian.SetWalk(false).Returns(true);
+            FakePedestrian.SetAudible(false).Returns(true);
+            FakePedestrian.SetWait(true).Returns(true);
+            FakeVehicle.SetAllGreen(true).Returns(true);
+            FakeTime.Move(120).Returns(true);
+
+
+            // using SetStateDirect to get into the redamber state with the specific dependencies
+            var controller2 = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+            controller2.SetStateDirect("redamber", "wait"); // forcing this parameters into the redamber state
+
+
+            // Act
+            bool result = controller2.SetCurrentState("green", "wait");
+            //Assert
+
+            Assert.That(result, Is.EqualTo(true));
+            FakeVehicle.Received().SetAllGreen(true);
+            FakePedestrian.Received().SetWalk(false);
+            FakePedestrian.Received().SetWait(true);
+            FakePedestrian.Received().SetAudible(false);
+            FakeTime.Received().Move(120);
+
 
         }
     }
