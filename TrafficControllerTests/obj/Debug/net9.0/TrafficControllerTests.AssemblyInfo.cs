@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TrafficControllerTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c35386e1f8a74dcb13c6b4fd3cce80042a36aa39")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7a9973c45ad38b2f3c0e83d05489e0e29b22ead8")]
 [assembly: System.Reflection.AssemblyProductAttribute("TrafficControllerTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TrafficControllerTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

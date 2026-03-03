@@ -329,7 +329,34 @@ namespace SmartTrafficControllerTests
             FakeWebService.Received().LogEngineerRequired("out of service"); // appropriate message shown
         }
 
+
+        [Test]
+        public void GetStatusReport_FaultDetected_LogEngineerRequired() // L3R4 Verifying that LogEngineerRequired returns the correct string 
+        {
+            // Arrange
+
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+            FakeVehicle.GetStatus().Returns("VehiclesSignal,OK,OK,FAULT,OK,OK,OK,OK,FAULT,OK,"); // Has fault
+            FakePedestrian.GetStatus().Returns("PedestrianSignal,OK,OK,OK,OK,OK,OK,OK,OK,OK,"); // Has no fault
+            FakeTime.GetStatus().Returns("Timer,OK,FAULT,OK,OK,OK,OK,FAULT,OK,OK,"); // Has fault
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+            // Act
+
+            controller.GetStatusReport();
+
+            // Assert
+            FakeWebService.Received().LogEngineerRequired("VehicleSignal,Timer,");
+
+        }
+
     }
+
 
 
 }
