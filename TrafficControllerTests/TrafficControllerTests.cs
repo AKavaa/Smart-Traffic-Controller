@@ -366,7 +366,7 @@ namespace SmartTrafficControllerTests
             var FakeWebService = Substitute.For<IWebService>();
             var FakeMail = Substitute.For<IEmailService>();
 
-            FakeTime.Wait(3).Returns(false); // triggers fault path
+            FakeTime.Wait(3).Returns(false); // triggers fault path, false Wait call 
             FakeWebService.LogEngineerRequired("out of service")
             .Throws(new Exception("Log Failed")); // Simulation of LogEngineer throwing an exception, Mock
 
