@@ -11,7 +11,7 @@ namespace SmartTrafficController
     public interface IVehicleSignalManager
     {
         string GetStatus();
-        bool SetAllRed();
+        bool SetAllRed(bool on);
         bool SetAllGreen(bool on);
 
     }
@@ -28,8 +28,8 @@ namespace SmartTrafficController
     public interface ITimeManager
     {
         string GetStatus();
-        bool Wait(int seconds);
-        bool Move(int seconds);
+
+        bool Delay(int time);
     }
 
     public interface IWebService
@@ -177,9 +177,9 @@ namespace SmartTrafficController
                         bool walk = pedestrian_manager.SetWalk(false); // false -> disabled
                         bool audible = pedestrian_manager.SetAudible(false);
                         bool wait = pedestrian_manager.SetWait(true);
-                        bool waitFirst = time_manager.Wait(3);
+                        bool waitFirst = time_manager.Delay(3);
                         bool set_all_green = vehicle_manager.SetAllGreen(true);
-                        bool move = time_manager.Move(120);
+                        bool move = time_manager.Delay(120);
 
                         if (walk && audible && wait && set_all_green && move && waitFirst)
                         {
@@ -226,11 +226,11 @@ namespace SmartTrafficController
                     if (vehicleSignal_input == "red")
                     {
                         // L3R1
-                        bool wait = time_manager.Wait(3); // wait 3 seconds
-                        bool set_all_red = vehicle_manager.SetAllRed(); // set all to red
+                        bool wait = time_manager.Delay(3); // wait 3 seconds
+                        bool set_all_red = vehicle_manager.SetAllRed(true); // set all to red
                         bool walk = pedestrian_manager.SetWalk(true); // wall 
                         bool audible = pedestrian_manager.SetAudible(true); // set to audible 
-                        bool move = time_manager.Move(60);
+                        bool move = time_manager.Delay(60);
 
                         if (wait && set_all_red && walk && audible && move)
                         {

@@ -100,11 +100,11 @@ namespace SmartTrafficControllerTests
             var FakeWebService = Substitute.For<IWebService>();
             var FakeMail = Substitute.For<IEmailService>();
 
-            FakeTime.Wait(3).Returns(true);
-            FakeVehicle.SetAllRed().Returns(true);
+            FakeTime.Delay(3).Returns(true);
+            FakeVehicle.SetAllRed(true).Returns(true);
             FakePedestrian.SetWalk(true).Returns(true);
             FakePedestrian.SetAudible(true).Returns(true);
-            FakeTime.Move(60).Returns(true);
+            FakeTime.Delay(60).Returns(true);
 
             var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
 
@@ -240,11 +240,11 @@ namespace SmartTrafficControllerTests
             var FakeWebService = Substitute.For<IWebService>();
             var FakeMail = Substitute.For<IEmailService>();
 
-            FakeTime.Wait(3).Returns(true);
-            FakeVehicle.SetAllRed().Returns(true);
+            FakeTime.Delay(3).Returns(true);
+            FakeVehicle.SetAllRed(true).Returns(true);
             FakePedestrian.SetWalk(true).Returns(true);
             FakePedestrian.SetAudible(true).Returns(true);
-            FakeTime.Move(60).Returns(true);
+            FakeTime.Delay(60).Returns(true);
 
             var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
 
@@ -255,11 +255,11 @@ namespace SmartTrafficControllerTests
             //Assert
 
             Assert.That(result, Is.EqualTo(true));
-            FakeTime.Received().Wait(3); // NSubstitute method that verifies that the mock object was actually called 
-            FakeVehicle.Received().SetAllRed();
+            FakeTime.Received().Delay(3); // NSubstitute method that verifies that the mock object was actually called 
+            FakeVehicle.Received().SetAllRed(true);
             FakePedestrian.Received().SetWalk(true);
             FakePedestrian.Received().SetAudible(true);
-            FakeTime.Received().Move(60);
+            FakeTime.Received().Delay(60);
 
         }
 
@@ -278,8 +278,8 @@ namespace SmartTrafficControllerTests
             FakePedestrian.SetAudible(false).Returns(true);
             FakePedestrian.SetWait(true).Returns(true);
             FakeVehicle.SetAllGreen(true).Returns(true);
-            FakeTime.Wait(3).Returns(true);
-            FakeTime.Move(120).Returns(true);
+            FakeTime.Delay(3).Returns(true);
+            FakeTime.Delay(120).Returns(true);
 
 
             // using SetStateDirect to get into the redamber state with the specific dependencies
@@ -297,8 +297,8 @@ namespace SmartTrafficControllerTests
             FakePedestrian.Received().SetWalk(false);
             FakePedestrian.Received().SetWait(true);
             FakePedestrian.Received().SetAudible(false);
-            FakeTime.Received().Wait(3);
-            FakeTime.Received().Move(120);
+            FakeTime.Received().Delay(3);
+            FakeTime.Received().Delay(120);
 
         }
         [Test]
@@ -312,7 +312,7 @@ namespace SmartTrafficControllerTests
             var FakeWebService = Substitute.For<IWebService>();
             var FakeMail = Substitute.For<IEmailService>();
 
-            FakeTime.Wait(3).Returns(false); // failure simulation to enable fault detection
+            FakeTime.Delay(3).Returns(false); // failure simulation to enable fault detection
 
             var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
 
@@ -366,7 +366,7 @@ namespace SmartTrafficControllerTests
             var FakeWebService = Substitute.For<IWebService>();
             var FakeMail = Substitute.For<IEmailService>();
 
-            FakeTime.Wait(3).Returns(false); // triggers fault path, false Wait call 
+            FakeTime.Delay(3).Returns(false); // triggers fault path, false Wait call 
             FakeWebService.LogEngineerRequired("out of service")
             .Throws(new Exception("Log Failed")); // Simulation of LogEngineer throwing an exception, Mock
 
