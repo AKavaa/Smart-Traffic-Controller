@@ -355,6 +355,37 @@ namespace SmartTrafficControllerTests
 
         }
 
+        [Test]
+        public void SetCurrentState_LogEngineerRequiredThrows_Email() // L3R5 Verifyig that the SendMail() is being called when LogEngineerRequired is throwed
+        {
+            // Arrange
+
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+            FakeTime.Wait(3).Returns(false); // triggers fault path
+            FakeWebService.LogEngineerRequired("out of service")
+            .Throws(new Exception("Log Failed")); // Simulation of LogEngineer throwing an exception, Mock
+
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+
+            //Act
+            controller.SetCurrentState("red", "walk"); // amber to red triggers fault path 
+
+            // Assert
+            FakeMail.Received().SendMail(
+                 "transportoffice@gmail.com",
+              "failed to log out of service",
+              "Log Failed" // -> exception message from the failed LogEngineerRequiered call
+            );
+
+
+        }
+
     }
 
 
