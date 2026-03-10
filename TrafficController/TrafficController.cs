@@ -8,41 +8,6 @@
 namespace SmartTrafficController
 {
 
-    public interface IVehicleSignalManager
-    {
-        string GetStatus();
-        bool SetAllRed(bool on);
-        bool SetAllGreen(bool on);
-
-    }
-
-    public interface IPedestrianSignalManager
-    {
-        string GetStatus();
-        bool SetWalk(bool on);
-        bool SetAudible(bool on);
-        bool SetWait(bool on);
-
-    }
-
-    public interface ITimeManager
-    {
-        string GetStatus();
-
-        bool Delay(int time);
-    }
-
-    public interface IWebService
-    {
-        bool LogEngineerRequired(string message);
-        bool FaultDetected(bool on);
-
-    }
-    public interface IEmailService
-    {
-        string SendMail(string emailAddress, string subject, string message);
-
-    }
 
 
 
