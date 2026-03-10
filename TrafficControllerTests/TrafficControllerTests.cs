@@ -177,6 +177,17 @@ namespace SmartTrafficControllerTests
         [TestCase("green", "wait", true)] // test 2 valid inputs - expects true
         [TestCase("blue", "sprinting", false)] // test 3 invalid inputs - expects false
         [TestCase("purple", "wait", false)] // test 4 invalid inputs - expects false
+        [TestCase("red", "walk", true)]
+        [TestCase("red", "wait", true)]
+        [TestCase("redamber", "walk", true)]
+        [TestCase("redamber", "wait", true)]
+        [TestCase("oosv", "walk", true)]
+        [TestCase("oosv", "oosp", true)] // oosv is valid only with oosp
+        [TestCase("RED", "WALK", true)] // upper case handling
+        [TestCase("AMBER", "WAIT", true)]
+        [TestCase("REDAMBER", "WAIT", true)]
+        [TestCase("Green", "Walk", true)] // mixed case
+        [TestCase("Redamber", "Wait", true)]
 
         public void SetStateDirect_ManyInputs_ReturnsExpected(string vehicle, string pedestrian, bool expected)
         {
