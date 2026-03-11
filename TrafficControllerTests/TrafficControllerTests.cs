@@ -226,11 +226,15 @@ namespace SmartTrafficControllerTests
 
         }
 
-        [Test]
-        public void Constructor_InvalidState_ThrowArgumentException() // L2R2
+        [TestCase("blue", "walk")]
+        [TestCase("amber", "run")]
+        [TestCase("oosv", "oosp")]
+        [TestCase(" ", "walk")]
+        [TestCase("green", "sprint")]
+        public void Constructor_InvalidState_ThrowArgumentException(string vehicle, string pedestrian) // L2R2
         {
             // Arrange + Act
-            var exception = Assert.Throws<ArgumentException>(() => new TrafficController("test", "pink", "run"));
+            var exception = Assert.Throws<ArgumentException>(() => new TrafficController("test", vehicle, pedestrian));
 
 
             Console.WriteLine(exception.Message); // output the message into the console
