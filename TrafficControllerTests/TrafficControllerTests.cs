@@ -50,6 +50,8 @@ namespace SmartTrafficControllerTests
         [TestCase("EAST", "east")]
         [TestCase("WEST", "west")]
         [TestCase("Test", "test")]
+        [TestCase("ABC123", "abc123")]
+        [TestCase("MAINBUILDING", "mainbuilding")]
         public void InitialiseState_UpdateToLowerCase(string input, string expected) //L1R3
         {
             //Arrange
@@ -242,6 +244,20 @@ namespace SmartTrafficControllerTests
             //Assert
             // checks if the exception message is identical
             Assert.That(exception.Message, Is.EqualTo("Argument Exception: TrafficController can only be initialised to the following states: 'green', 'amber', 'red', ‘redamber’ for the vehicle signals and ‘wait’ or ‘walk’ for the pedestrian signal"));
+        }
+
+        [TestCase("amber", "wait")]
+        [TestCase("amber", "walk")]
+        [TestCase("green", "wait")]
+        [TestCase("green", "walk")]
+        [TestCase("red", "wait")]
+        [TestCase("amber", "walk")]
+        [TestCase("redamber", "wait")]
+        [TestCase("redamber", "walk")]
+
+        public void Constructor_validState_DoesNotThrowException(string vehicle, string pedestrian) // L2R2 does not throw exception
+        {
+            Assert.DoesNotThrow(() => new TrafficController("test", vehicle, pedestrian));
         }
 
         [Test]
