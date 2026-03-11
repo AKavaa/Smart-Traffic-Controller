@@ -350,7 +350,7 @@ namespace SmartTrafficController
 
 
 
-        public void RestoreFromHistory()
+        public void RestoreFromHistory() // restoring previous state after fault
         {
             CurrentVehicleSignalState = historyVehicleManager;
             CurrentPedestrianSignalState = historyPedestrianState;

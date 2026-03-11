@@ -417,7 +417,61 @@ namespace SmartTrafficControllerTests
 
         }
 
+        [Test]
+        [TestCase(false, true, true, true, true)] // Delay(3) fails
+        [TestCase(true, false, true, true, true)] // SetAllRed fails
+        [TestCase(false, true, false, true, true)] // setWalk fails
+        [TestCase(false, true, true, false, true)] // SetAudible fails
+        [TestCase(false, true, true, true, false)] // Delay(60)fails
+        public void RestoreFromHistory_AmberToRedFault_RestoresAmberWait(
+            bool delay, bool setAllRed, bool walk, bool audible, bool move
+        )
+        {
+            // Arrange
+
+            var FakeVehicle = Substitute.For<IVehicleSignalManager>();
+            var FakePedestrian = Substitute.For<IPedestrianSignalManager>();
+            var FakeTime = Substitute.For<ITimeManager>();
+            var FakeWebService = Substitute.For<IWebService>();
+            var FakeMail = Substitute.For<IEmailService>();
+
+
+            FakePedestrian.SetWalk(true).Returns(walk);
+            FakePedestrian.SetAudible(true).Returns(audible);
+            FakePedestrian.SetWait(true).Returns(true);
+            FakeVehicle.SetAllRed(true).Returns(setAllRed);
+            FakeTime.Delay(3).Returns(delay);
+            FakeTime.Delay(60).Returns(move);
+
+
+            var controller = new TrafficController("test", FakeVehicle, FakePedestrian, FakeTime, FakeWebService, FakeMail);
+
+            // controller will start from amber and wait by defauly
+
+
+            //Act - trigger fault path
+            controller.SetCurrentState("red", "wait");
+            Assert.That(controller.GetCurrentVehicleSignalState(), Is.EqualTo("oosv"));
+            Assert.That(controller.GetCurrentPedestrianSignalState(), Is.EqualTo("oosp"));
+
+
+            // restore from history
+
+            controller.RestoreFromHistory();
+
+            // Assert - should get back to amber and wait state
+
+            Assert.That(controller.GetCurrentVehicleSignalState(), Is.EqualTo("amber"));
+            Assert.That(controller.GetCurrentPedestrianSignalState(), Is.EqualTo("wait"));
+
+
+
+
+        }
+
     }
+
+
 
 
 
