@@ -9,10 +9,12 @@ using NSubstitute.ExceptionExtensions;
 
 namespace SmartTrafficControllerTests
 {
+
+
     [TestFixture]
     public class TrafficControllerTests
     {
-        [Test]
+
         public void InitialiseState_SetAmber()   // L1R4 (initial state amber)
         {
             // Arrange 
@@ -188,6 +190,12 @@ namespace SmartTrafficControllerTests
         [TestCase("REDAMBER", "WAIT", true)]
         [TestCase("Green", "Walk", true)] // mixed case
         [TestCase("Redamber", "Wait", true)]
+        [TestCase("RED", "Wait", true)]
+        [TestCase("amber", "run", false)]
+        [TestCase("123", "wait", false)]
+        [TestCase("red", "sprint", false)]
+        [TestCase("", "walk", false)]
+
 
         public void SetStateDirect_ManyInputs_ReturnsExpected(string vehicle, string pedestrian, bool expected)
         {
