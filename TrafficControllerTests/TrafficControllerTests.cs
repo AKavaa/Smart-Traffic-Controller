@@ -41,8 +41,19 @@ namespace SmartTrafficControllerTests
             Console.WriteLine(result);
         }
 
+
         [Test]
-        public void InitialiseState_UpdateToLowerCase() //L1R3
+
+        [TestCase("SOUTH", "south", true)]
+        [TestCase("NORTH", "north", true)]
+        [TestCase("EAST", "east", true)]
+        [TestCase("WEST", "west", true)]
+        [TestCase("WEST", "west", true)]
+        [TestCase("west", "WEST", false)]
+        [TestCase("SOUTH", "west", false)]
+        [TestCase("SOUTH", "SOUTH", false)]
+
+        public void InitialiseState_UpdateToLowerCase(string input, string expected, bool expect) //L1R3
         {
             //Arrange
             var controller = new TrafficController("test");
@@ -54,17 +65,17 @@ namespace SmartTrafficControllerTests
             Assert.That(controller.GetIntersectionID(), Is.EqualTo("south"));
         }
 
-        [Test]
-        public void ConstructorInitialise_ToLowerCase() //L1R2
+
+        public void ConstructorInitialise_ToLowerCase(string input, string expected) //L1R2
         {
             //Arranne + Act
-            var controller = new TrafficController("SOUTH");
+            var controller = new TrafficController(input);
 
             //Assert
-            Assert.That(controller.GetIntersectionID(), Is.EqualTo("south"));
+            Assert.That(controller.GetIntersectionID(), Is.EqualTo(expected));
         }
-        [Test]
-        public void InitialiseState_SetStateDirect_returnTrue() //L1R5
+
+        public void InitialiseState_SetStateDirect_returnTrue(string input, string expected) //L1R5
         {
 
             //Arrange
