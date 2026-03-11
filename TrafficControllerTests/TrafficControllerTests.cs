@@ -15,6 +15,7 @@ namespace SmartTrafficControllerTests
     public class TrafficControllerTests
     {
 
+        [Test]
         public void InitialiseState_SetAmber()   // L1R4 (initial state amber)
         {
             // Arrange 
@@ -42,31 +43,31 @@ namespace SmartTrafficControllerTests
         }
 
 
-        [Test]
 
-        [TestCase("SOUTH", "south", true)]
-        [TestCase("NORTH", "north", true)]
-        [TestCase("EAST", "east", true)]
-        [TestCase("WEST", "west", true)]
-        [TestCase("WEST", "west", true)]
-        [TestCase("west", "WEST", false)]
-        [TestCase("SOUTH", "west", false)]
-        [TestCase("SOUTH", "SOUTH", false)]
-        [TestCase("NORTH", "WEST", false)]
 
-        public void InitialiseState_UpdateToLowerCase(string input, string expected, bool expect) //L1R3
+        [TestCase("SOUTH", "south")]
+        [TestCase("NORTH", "north")]
+        [TestCase("EAST", "east")]
+        [TestCase("WEST", "west")]
+        [TestCase("Test", "test")]
+        public void InitialiseState_UpdateToLowerCase(string input, string expected) //L1R3
         {
             //Arrange
             var controller = new TrafficController("test");
 
             //Act
-            controller.SetIntersectionID("SOUTH");
+            controller.SetIntersectionID(input);
 
             //Assert
-            Assert.That(controller.GetIntersectionID(), Is.EqualTo("south"));
+            Assert.That(controller.GetIntersectionID(), Is.EqualTo(expected));
         }
 
 
+        [TestCase("SOUTH", "south")]
+        [TestCase("NORTH", "north")]
+        [TestCase("EAST", "east")]
+        [TestCase("WEST", "west")]
+        [TestCase("Test", "test")]
         public void ConstructorInitialise_ToLowerCase(string input, string expected) //L1R2
         {
             //Arranne + Act
@@ -76,7 +77,9 @@ namespace SmartTrafficControllerTests
             Assert.That(controller.GetIntersectionID(), Is.EqualTo(expected));
         }
 
-        public void InitialiseState_SetStateDirect_returnTrue(string input, string expected) //L1R5
+
+        [Test]
+        public void InitialiseState_SetStateDirect_returnTrue() //L1R5
         {
 
             //Arrange
@@ -420,9 +423,9 @@ namespace SmartTrafficControllerTests
         [Test]
         [TestCase(false, true, true, true, true)] // Delay(3) fails
         [TestCase(true, false, true, true, true)] // SetAllRed fails
-        [TestCase(false, true, false, true, true)] // setWalk fails
-        [TestCase(false, true, true, false, true)] // SetAudible fails
-        [TestCase(false, true, true, true, false)] // Delay(60)fails
+        [TestCase(true, true, false, true, true)] // setWalk fails
+        [TestCase(true, true, true, false, true)] // SetAudible fails
+        [TestCase(true, true, true, true, false)] // Delay(60)fails
         public void RestoreFromHistory_AmberToRedFault_RestoresAmberWait(
             bool delay, bool setAllRed, bool walk, bool audible, bool move
         )
@@ -450,7 +453,7 @@ namespace SmartTrafficControllerTests
 
 
             //Act - trigger fault path
-            controller.SetCurrentState("red", "wait");
+            controller.SetCurrentState("red", "walk");
             Assert.That(controller.GetCurrentVehicleSignalState(), Is.EqualTo("oosv"));
             Assert.That(controller.GetCurrentPedestrianSignalState(), Is.EqualTo("oosp"));
 
