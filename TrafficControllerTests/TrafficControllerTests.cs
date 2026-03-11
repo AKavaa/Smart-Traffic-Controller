@@ -52,6 +52,7 @@ namespace SmartTrafficControllerTests
         [TestCase("west", "WEST", false)]
         [TestCase("SOUTH", "west", false)]
         [TestCase("SOUTH", "SOUTH", false)]
+        [TestCase("NORTH", "WEST", false)]
 
         public void InitialiseState_UpdateToLowerCase(string input, string expected, bool expect) //L1R3
         {

@@ -16,14 +16,18 @@ namespace SmartTrafficController
         // object variables mentioned in the brief
 
         private string intersectionID;
-        private string CurrentVehicleSignalState;
-        private string CurrentPedestrianSignalState;
+        private string CurrentVehicleSignalState = "amber";
+        private string CurrentPedestrianSignalState = "wait";
 
+        private string historyVehicleManager = "amber";
+        private string historyPedestrianState = "wait";
         private IVehicleSignalManager vehicle_manager;
         private IPedestrianSignalManager pedestrian_manager;
         private ITimeManager time_manager;
         private IWebService webService_manager;
         private IEmailService email_manager;
+
+
 
 
         public TrafficController(string id)
@@ -170,8 +174,10 @@ namespace SmartTrafficController
                             }
 
 
-                            CurrentPedestrianSignalState = "oosp"; // changing states for pedestrian
-                            CurrentVehicleSignalState = "oosv"; // changing states for vehicle
+                            historyVehicleManager = CurrentVehicleSignalState; // saves history
+                            historyPedestrianState = CurrentPedestrianSignalState; // saves history
+                            CurrentVehicleSignalState = "oosv";
+                            CurrentPedestrianSignalState = "oosp";
 
 
                             return false;
@@ -221,8 +227,12 @@ namespace SmartTrafficController
                                 );
                             }
 
-                            CurrentPedestrianSignalState = "oosp"; // changing states for pedestrian
-                            CurrentVehicleSignalState = "oosv"; // changing states for vehicle
+                            historyVehicleManager = CurrentVehicleSignalState; // saves history
+                            historyPedestrianState = CurrentPedestrianSignalState; // saves history
+                            CurrentVehicleSignalState = "oosv";
+                            CurrentPedestrianSignalState = "oosp";
+
+
                             return false;
 
                         }
@@ -340,6 +350,13 @@ namespace SmartTrafficController
 
 
 
+        public void RestoreFromHistory()
+        {
+            CurrentVehicleSignalState = historyVehicleManager;
+            CurrentPedestrianSignalState = historyPedestrianState;
+        }
+
     }
+
 
 }
