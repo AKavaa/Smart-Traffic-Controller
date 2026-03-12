@@ -237,6 +237,7 @@ namespace SmartTrafficControllerTests
         public void Constructor_InvalidState_ThrowArgumentException(string vehicle, string pedestrian) // L2R2
         {
             // Arrange + Act
+            // Lambda expression is used to delay execution, allowing the NUnit framework to cattch the ArgumentException
             var exception = Assert.Throws<ArgumentException>(() => new TrafficController("test", vehicle, pedestrian));
 
 
