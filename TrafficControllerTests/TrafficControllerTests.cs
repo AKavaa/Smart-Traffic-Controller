@@ -44,7 +44,7 @@ namespace SmartTrafficControllerTests
 
 
 
-
+        [Test]
         [TestCase("SOUTH", "south")]
         [TestCase("NORTH", "north")]
         [TestCase("EAST", "east")]
@@ -64,7 +64,7 @@ namespace SmartTrafficControllerTests
             Assert.That(controller.GetIntersectionID(), Is.EqualTo(expected));
         }
 
-
+        [Test]
         [TestCase("SOUTH", "south")]
         [TestCase("NORTH", "north")]
         [TestCase("EAST", "east")]
@@ -228,6 +228,7 @@ namespace SmartTrafficControllerTests
 
         }
 
+        [Test]
         [TestCase("blue", "walk")]
         [TestCase("amber", "run")]
         [TestCase("oosv", "oosp")]
@@ -246,6 +247,7 @@ namespace SmartTrafficControllerTests
             Assert.That(exception.Message, Is.EqualTo("Argument Exception: TrafficController can only be initialised to the following states: 'green', 'amber', 'red', ‘redamber’ for the vehicle signals and ‘wait’ or ‘walk’ for the pedestrian signal"));
         }
 
+        [Test]
         [TestCase("amber", "wait")]
         [TestCase("amber", "walk")]
         [TestCase("green", "wait")]
