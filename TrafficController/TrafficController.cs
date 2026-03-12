@@ -29,7 +29,7 @@ namespace SmartTrafficController
 
 
 
-
+        //L1R2 - Initialise intersection id to lowercase
         public TrafficController(string id)
         {
             intersectionID = id.ToLower();
@@ -97,7 +97,7 @@ namespace SmartTrafficController
             intersectionID = id.ToLower();
 
         }
-        // L1R5 
+        // L1R5 - Sets state directly without transition validation, returns false if the state is invalid
         public bool SetStateDirect(string vehicle, string pedestrian)
         {
             string vehicle_input = vehicle?.ToLower() ?? ""; // if vehicle is "RED" it will become "red", and ?? "" eliminates the warning inside the code
@@ -120,7 +120,8 @@ namespace SmartTrafficController
 
         }
 
-        // L2R1 
+        // L2R1 - Validates and transitions to the next step of the sequence 
+        // Sequence: amber -> red -> redamber -> green -> amber
         public bool SetCurrentState(string vehicleSignal, string pedestrianSignal)
         {
             string vehicleSignal_input = vehicleSignal?.ToLower() ?? "";
@@ -166,7 +167,7 @@ namespace SmartTrafficController
                             }
                             catch (Exception exception)
                             {
-                                email_manager.SendMail( // SendMail method taked 3 parameteers
+                                email_manager.SendMail( //  SendMail takes 3 parameters: email address, subject and message 
                                     "transportoffice@gmail.com",
                                     "failed to log out of service",
                                     exception.Message
@@ -199,7 +200,7 @@ namespace SmartTrafficController
                         // L3R1
                         bool wait = time_manager.Delay(3); // wait 3 seconds
                         bool set_all_red = vehicle_manager.SetAllRed(true); // set all to red
-                        bool walk = pedestrian_manager.SetWalk(true); // wall 
+                        bool walk = pedestrian_manager.SetWalk(true); // walk 
                         bool audible = pedestrian_manager.SetAudible(true); // set to audible 
                         bool move = time_manager.Delay(60);
 
@@ -220,7 +221,7 @@ namespace SmartTrafficController
                             }
                             catch (Exception exception) // if LogEngineerRequired throws exception, email with exception is sent 
                             {
-                                email_manager.SendMail( // SendMail method taked 3 parameteers
+                                email_manager.SendMail( // SendMail takes 3 parameters: email address, subject and message 
                                     "transportoffice@gmail.com",
                                     "failed to log out of service",
                                     exception.Message
@@ -267,7 +268,7 @@ namespace SmartTrafficController
             }
 
         }
-
+        // L2R1 - initialise 5 managers through a constructor 
         public TrafficController(string id, IVehicleSignalManager iVehicleSignalManager, IPedestrianSignalManager iPedestrianSignalManager, ITimeManager iTimeManager, IWebService iWebService, IEmailService iEmailService)
         {
 
@@ -300,7 +301,7 @@ namespace SmartTrafficController
 
 
 
-        // check status method for future tests
+        // L2R3 - check status method for future tests
 
         public bool CheckStatus()
         {
@@ -309,7 +310,7 @@ namespace SmartTrafficController
 
         }
 
-        public string GetStatusReport() // L2R4
+        public string GetStatusReport() // L2R4 - combines all the manager statuses and log engineer if found
         {
             // Getting the status of the each class 
             string vehicleStatus = vehicle_manager.GetStatus();
